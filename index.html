@@ -2,7 +2,6 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-<!-- ... existing code ... -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Central Europe Adventure</title>
     
@@ -12,7 +11,552 @@
     <!-- End PWA Enhancements -->
 
     <script src="https://cdn.tailwindcss.com"></script>
-<!-- ... existing code ... -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony (Off-White, Dark Slate, Muted Olive, Soft Terracotta) -->
+    <!-- Application Structure Plan: A single-page application with a sticky top navigation for smooth scrolling between five distinct sections: Overview, Itinerary, Bookings, Budget, and Travel Tips. This structure is chosen to provide a clear, task-oriented user flow for a first-time traveler. The Itinerary uses a nested tab/accordion system (City -> Day) to prevent information overload and allows users to focus on one day at a time. The goal is to present a comprehensive travel plan that is easy to digest and navigate. -->
+    <!-- Visualization & Content Choices: The core data is the travel schedule and budget. The itinerary is presented using interactive HTML accordions (JS-controlled) for clarity and focus. The budget breakdown uses a Chart.js donut chart to provide an immediate, visual comparison of on-trip spending categories (Goal: Compare), with tooltips for detail (Interaction: Hover). This is more impactful than a simple table. Bookings are organized into clean HTML cards for quick reference (Goal: Inform). All visual elements like icons are Unicode characters, and layouts are built with Tailwind CSS. NO SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFDFB;
+            color: #3D4852;
+        }
+        .nav-link {
+            transition: color 0.3s ease, border-bottom-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #C06C59;
+            border-bottom-color: #C06C59;
+        }
+        .city-tab.active {
+            background-color: #8A9A5B;
+            color: #FDFDFB;
+        }
+        .day-accordion-header.open {
+            background-color: #f0f2e6;
+        }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 400px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 400px;
+            max-height: 70vh; 
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl font-bold text-[#3D4852]">European Adventure</h1>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#overview" class="nav-link text-gray-600 font-medium pb-1">Overview</a>
+                    <a href="#itinerary" class="nav-link text-gray-600 font-medium pb-1">Itinerary</a>
+                    <a href="#bookings" class="nav-link text-gray-600 font-medium pb-1">Bookings</a>
+                    <a href="#budget" class="nav-link text-gray-600 font-medium pb-1">Budget</a>
+                    <a href="#tips" class="nav-link text-gray-600 font-medium pb-1">Travel Tips</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden py-4">
+                <a href="#overview" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Overview</a>
+                <a href="#itinerary" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Itinerary</a>
+                <a href="#bookings" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Bookings</a>
+                <a href="#budget" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Budget</a>
+                <a href="#tips" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Travel Tips</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="overview" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-4">Your Grand Tour of Central Europe</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto mb-12">An 8-night adventure from the historic baths of Budapest to the charming streets of Vienna and the fairytale skyline of Prague, perfectly timed for the start of the magical Christmas market season!</p>
+                
+                <div class="relative max-w-4xl mx-auto">
+                     <div class="absolute left-0 top-1/2 w-full h-0.5 bg-gray-300"></div>
+                     <div class="relative flex justify-between items-center">
+                        <div class="text-center z-10">
+                            <div class="w-24 h-24 mx-auto bg-[#8A9A5B] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">DFW</div>
+                            <p class="mt-2 font-semibold">Dallas</p>
+                            <p class="text-sm text-gray-500">Nov 14</p>
+                        </div>
+                        <div class="text-center z-10">
+                            <div class="w-24 h-24 mx-auto bg-[#C06C59] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">BUD</div>
+                            <p class="mt-2 font-semibold">Budapest</p>
+                            <p class="text-sm text-gray-500">Nov 15-18</p>
+                        </div>
+                        <div class="text-center z-10">
+                            <div class="w-24 h-24 mx-auto bg-[#8A9A5B] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">VIE</div>
+                            <p class="mt-2 font-semibold">Vienna</p>
+                            <p class="text-sm text-gray-500">Nov 18-20</p>
+                        </div>
+                        <div class="text-center z-10">
+                            <div class="w-24 h-24 mx-auto bg-[#C06C59] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">PRG</div>
+                            <p class="mt-2 font-semibold">Prague</p>
+                            <p class="text-sm text-gray-500">Nov 20-23</p>
+                        </div>
+                         <div class="text-center z-10">
+                            <div class="w-24 h-24 mx-auto bg-[#8A9A5B] rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">DFW</div>
+                            <p class="mt-2 font-semibold">Dallas</p>
+                            <p class="text-sm text-gray-500">Nov 23</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="itinerary" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Day-by-Day Itinerary</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">Here’s a detailed plan for your journey. Each day is packed with must-see sights, local culinary experiences, and tips to make the most of your time. Click on a city and then a day to see the details.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto">
+                    <div id="city-tabs" class="flex justify-center border-b border-gray-200 mb-8">
+                        <button class="city-tab py-3 px-6 font-semibold text-gray-600 transition duration-300 ease-in-out" data-city="budapest">Budapest</button>
+                        <button class="city-tab py-3 px-6 font-semibold text-gray-600 transition duration-300 ease-in-out" data-city="vienna">Vienna</button>
+                        <button class="city-tab py-3 px-6 font-semibold text-gray-600 transition duration-300 ease-in-out" data-city="prague">Prague</button>
+                    </div>
+
+                    <div id="itinerary-content">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="bookings" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Your Travel Bookings</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">All your confirmation details in one place. Keep this handy for check-ins and reference.</p>
+                </div>
+                <div id="bookings-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="budget" class="py-16 md:py-24 bg-gray-50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Trip Budget Breakdown (Per Person)</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">A detailed breakdown of your trip costs. The chart visualizes your estimated on-trip spending.</p>
+                </div>
+                <div class="flex flex-wrap -mx-4 items-center">
+                    <div class="w-full lg:w-1/2 px-4 mb-8 lg:mb-0">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                             <h3 class="text-xl font-bold mb-4">Fixed Costs (Pre-Paid)</h3>
+                             <ul id="fixed-costs-details" class="space-y-2 text-gray-700 mb-4"></ul>
+                             <div class="border-t pt-3 mt-3">
+                                <p class="flex justify-between items-center font-semibold text-lg">
+                                    <span>Total Fixed Costs:</span>
+                                    <span id="total-fixed-cost" class="text-[#3D4852]"></span>
+                                </p>
+                            </div>
+                            <h3 class="text-xl font-bold mb-4 mt-6">Estimated On-Trip Expenses</h3>
+                            <ul id="additional-costs-details" class="space-y-2 text-gray-700"></ul>
+                             <div class="border-t pt-3 mt-3">
+                                <p class="flex justify-between items-center font-semibold text-lg">
+                                    <span>Total Additional Costs:</span>
+                                    <span id="total-additional-cost" class="text-[#3D4852]"></span>
+                                </p>
+                            </div>
+                            <div class="bg-[#8A9A5B] text-white p-4 rounded-lg mt-6">
+                                <p class="flex justify-between items-center font-bold text-2xl">
+                                    <span>Grand Total Per Person:</span>
+                                    <span id="grand-total-cost"></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-full lg:w-1/2 px-4">
+                        <h3 class="text-center text-xl font-bold mb-4">On-Trip Spending Visualization</h3>
+                        <div class="chart-container">
+                            <canvas id="budgetChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tips" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">First-Timer's Travel Tips</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">Essential tips and hacks to help you navigate Central Europe like a pro.</p>
+                </div>
+                <div id="tips-accordion" class="max-w-3xl mx-auto space-y-4">
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 Your European Adventure. Have an amazing trip!</p>
+        </div>
+    </footer>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const itineraryData = {
+        budapest: [
+            { day: 'Day 1: Arrival & First Festive Glimpse (Nov 15)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">✈️ Morning:</strong> Arrive at Budapest (BUD) at 11:40 AM.</li>
+                    <li><strong class="font-semibold text-gray-800">🏨 Afternoon:</strong> Check into Wombat's City Hostel (from 2:00 PM). Rest and recover from jet lag.</li>
+                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> The Vörösmarty Square Christmas Market should be open! Take a gentle walk there. The atmosphere is magical at night. Grab a chimney cake (Kürtőskalács) and mulled wine (forralt bor) for a perfect first taste of Hungary.</li>
+                    <li><strong class="font-semibold text-gray-800">🌙 Goal:</strong> Early night to adjust to the new time zone.</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$25</li>
+                </ul>` },
+            { day: 'Day 2: Buda, Pest & Christmas Lights (Nov 16)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🌅 Morning (9am-12pm):</strong> Head to the Buda side. Visit Fisherman's Bastion, Matthias Church, and explore the Buda Castle complex.</li>
+                    <li><strong class="font-semibold text-gray-800">🌉 Afternoon (12pm-6pm):</strong> Take the Sikló (funicular) down, cross the Chain Bridge, see the Parliament, and visit St. Stephen's Basilica.</li>
+                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> Head to the Christmas market in front of St. Stephen's Basilica. It's famous for its stunning light show projected onto the basilica's facade. It's a great spot for dinner from the food stalls.</li>
+                    <li><strong class="font-semibold text-gray-800">🍻 Nightlife:</strong> Afterwards, head to Szimpla Kert, the original ruin bar.</li>
+                    <li><strong class="font-semibold text-gray-800">🚇 Transport:</strong> Get a 24-hour Budapest travel card (~$7.50).</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$45</li>
+                </ul>` },
+            { day: 'Day 3: Culture & Relaxation (Nov 17)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🏛️ Morning (9am-1pm):</strong> Visit Heroes' Square, then head to the famous Szechenyi Thermal Baths for a relaxing soak (~$35).</li>
+                    <li><strong class="font-semibold text-gray-800">🌳 Afternoon (1pm-6pm):</strong> Walk through Városliget (City Park), see Vajdahunyad Castle, and explore the Central Market Hall for lunch and last-minute souvenirs.</li>
+                    <li><strong class="font-semibold text-gray-800">🍽️ Dinner:</strong> Check out Mazel Tov for Mediterranean fusion (~$30).</li>
+                    <li><strong class="font-semibold text-gray-800">🍸 Evening:</strong> Enjoy fantastic views and cocktails at Leo Rooftop Bar (~$8-12 per drink).</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$90</li>
+                </ul>` },
+        ],
+        vienna: [
+            { day: 'Day 4: Arrival & Viennese Christmas Dream (Nov 18)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🚆 Morning:</strong> Check out. Take the 7:58 AM train from Budapest, arriving at Vienna Hbf at 10:32 AM.</li>
+                    <li><strong class="font-semibold text-gray-800">🏨 Afternoon:</strong> Check into Wombat's City Hostel Vienna Naschmarkt.</li>
+                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> Dive straight into the festive spirit! Head to the "Christkindlmarkt" on the Rathausplatz (City Hall Square). It's the largest and most famous market in Vienna. Enjoy some Punsch and roasted chestnuts.</li>
+                    <li><strong class="font-semibold text-gray-800">🍲 Dinner:</strong> The market has countless food stalls offering everything from sausages to pastries. It's the perfect place for a festive dinner.</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$30</li>
+                </ul>` },
+            { day: 'Day 5: Imperial Grandeur & Market Hopping (Nov 19)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🏰 Morning (9am-1pm):</strong> Tour the magnificent Schönbrunn Palace and its gardens. They have their own beautiful Christmas market in the palace courtyard.</li>
+                    <li><strong class="font-semibold text-gray-800">🏛️ Afternoon (1pm-6pm):</strong> Explore the Hofburg Palace complex and St. Stephen's Cathedral. There's another charming market at Karlsplatz, known for its focus on artisan crafts.</li>
+                    <li><strong class="font-semibold text-gray-800">🍽️ Dinner:</strong> Experience the famous Wiener Schnitzel at Figlmüller (~$23).</li>
+                    <li><strong class="font-semibold text-gray-800">🎭 Evening:</strong> Try to get cheap standing-room tickets for a show at the Vienna State Opera (~$5-9).</li>
+                    <li><strong class="font-semibold text-gray-800">🚇 Transport:</strong> 24-hour Vienna pass (~$8.70).</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$90</li>
+                </ul>` },
+        ],
+        prague: [
+            { day: 'Day 6: Fairytale Prague & Festive Welcome (Nov 20)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🚆 Morning/Afternoon:</strong> Check out. Take the 10:39 AM train from Vienna, arriving at Prague Main Station at 2:39 PM.</li>
+                    <li><strong class="font-semibold text-gray-800">🏨 Afternoon:</strong> Check into Charles Bridge Palace Hotel.</li>
+                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> The Old Town Square Christmas Market should be in full swing. It's just 5 minutes from your hotel and is considered one of Europe's best. Admire the giant Christmas tree and soak in the atmosphere.</li>
+                    <li><strong class="font-semibold text-gray-800">🍻 Dinner:</strong> Have dinner at Lokál Dlouhááá, a classic Czech beer hall (~$15), or simply feast on market food like grilled sausages (klobása).</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$35</li>
+                </ul>` },
+            { day: 'Day 7: Castle & Lesser Town Charm (Nov 21)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🏰 Morning (8am-12pm):</strong> Explore the Prague Castle complex. There is often a smaller, charming Christmas Market within the castle grounds.</li>
+                    <li><strong class="font-semibold text-gray-800">🎨 Afternoon (12pm-6pm):</strong> Wander the streets of the Lesser Town (Malá Strana) and see the Lennon Wall.</li>
+                    <li><strong class="font-semibold text-gray-800">🍽️ Dinner:</strong> Enjoy traditional Czech food at Bredovský Dvůr (~$25).</li>
+                    <li><strong class="font-semibold text-gray-800">🍸 Nightlife:</strong> Try experimental cocktails at the renowned Hemingway Bar (~$8-10).</li>
+                    <li><strong class="font-semibold text-gray-800">🚇 Transport:</strong> 24-hour Prague pass (~$5).</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$60</li>
+                </ul>` },
+            { day: 'Day 8: Old Town & Farewell Feasting (Nov 22)', content: `
+                <ul class="space-y-4 text-gray-600">
+                    <li><strong class="font-semibold text-gray-800">🕰️ Morning (9am-1pm):</strong> See the Astronomical Clock show, climb the Old Town Hall tower (~$19) for a bird's-eye view of the market, and tour the Jewish Quarter.</li>
+                    <li><strong class="font-semibold text-gray-800">🎄 Afternoon (1pm-6pm):</strong> Spend more time at the Old Town Square or visit the Wenceslas Square Christmas Market, which has a different vibe. It's a great time for last-minute gift shopping.</li>
+                    <li><strong class="font-semibold text-gray-800">🍲 Dinner:</strong> Have a final festive meal from the market stalls or a modern Czech dinner at Food Lab (~$30).</li>
+                    <li><strong class="font-semibold text-gray-800">✈️ Night:</strong> Pack and prepare for your early morning flight home.</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$70</li>
+                </ul>` },
+        ],
+    };
+    
+    const bookingsData = [
+        { icon: '✈️', title: 'Round-trip Flights', details: '<strong>Cost:</strong> $723.93 per person<br><strong>Confirmation:</strong> HG5IIL (Delta)<br><strong>Outbound:</strong> Nov 14, DFW ➔ BUD<br><strong>Return:</strong> Nov 23, PRG ➔ DFW' },
+        { icon: '🏨', title: 'Hotel: Budapest', details: '<strong>Name:</strong> Wombat\'s City Hostel Budapest<br><strong>Your Share (1/2):</strong> $140.50<br><strong>Dates:</strong> Nov 15 - Nov 18 (3 nights)' },
+        { icon: '🚆', title: 'Trains: BUD-VIE-PRG', details: '<strong>Operator:</strong> RegioJet<br><strong>Your Share (1/2):</strong> $45.80<br><strong>Dates:</strong> Nov 18 & Nov 20' },
+        { icon: '🏨', title: 'Hotel: Vienna', details: '<strong>Name:</strong> Wombat\'s City Hostel Vienna<br><strong>Your Share (1/2):</strong> $115.53<br><strong>Dates:</strong> Nov 18 - Nov 20 (2 nights)' },
+        { icon: '🏨', title: 'Hotel: Prague', details: '<strong>Name:</strong> Charles Bridge Palace Hotel<br><strong>Your Share (1/2):</strong> $264.33<br><strong>Dates:</strong> Nov 20 - Nov 23 (3 nights)' },
+    ];
+
+    const fixedCosts = [
+        { label: 'Flight', cost: 723.93 },
+        { label: 'Budapest Hotel', cost: 140.50 },
+        { label: 'Vienna Hotel', cost: 115.53 },
+        { label: 'Prague Hotel', cost: 264.33 },
+        { label: 'Train Tickets', cost: 45.80 },
+    ];
+
+    const additionalCosts = [
+        { label: 'Local Transport', cost: 15.00 },
+        { label: 'Tourist Attractions', cost: 135.00 },
+        { label: 'Food & Meals', cost: 211.00 },
+        { label: 'Alcohol & Nightlife', cost: 145.00 },
+        { label: 'Miscellaneous', cost: 100.00 },
+    ];
+    
+    const budgetChartData = {
+        labels: additionalCosts.map(item => item.label),
+        datasets: [{
+            data: additionalCosts.map(item => item.cost),
+            backgroundColor: ['#6B7A4A', '#8A9A5B', '#A9B96C', '#C06C59', '#D98A78'],
+            borderColor: '#FDFDFB',
+            borderWidth: 2,
+            hoverOffset: 4
+        }]
+    };
+    
+    const tipsData = [
+        { title: '🎄 Christmas Market Magic! 🎄', content: `
+            <p>You're arriving at the perfect time! Most Christmas markets in these cities open around mid-November. Here are some tips:</p>
+            <ul class="list-disc list-inside space-y-2 mt-2">
+                <li><strong>Bring Cash:</strong> While many stalls accept cards, cash is often faster and easier, especially for small purchases.</li>
+                <li><strong>Try the Drinks:</strong> Each country has its own version of mulled wine (Forralt Bor in Hungary, Glühwein in Austria, Svařák in Czech Republic). Also try the non-alcoholic Punsch!</li>
+                <li><strong>Mug Deposits:</strong> You'll pay a deposit for your ceramic mug. You can either return it to any stall to get your deposit back, or keep it as a cheap and charming souvenir!</li>
+                <li><strong>Go After Dark:</strong> The markets are at their most magical when the lights are twinkling at night.</li>
+                <li><strong>Eat Everything:</strong> The markets are a food paradise. From sausages to gingerbread to chimney cakes, it's a great way to sample local festive treats and can often replace a restaurant dinner.</li>
+            </ul>`
+        },
+        { title: 'Currency & General Tips', content: `
+            <ul class="list-disc list-inside space-y-2">
+                <li><strong>Hungary:</strong> Hungarian Forint (HUF). 1 USD ≈ 350 HUF</li>
+                <li><strong>Austria:</strong> Euro (EUR). 1 USD ≈ 0.92 EUR</li>
+                <li><strong>Czech Republic:</strong> Czech Koruna (CZK). 1 USD ≈ 23 CZK</li>
+                <li>Get a travel card like Revolut/Wise. Inform your bank of your travel.</li>
+                <li>You'll need a Type F (standard European) power adapter.</li>
+                <li>Pack layers, a waterproof jacket, and comfortable shoes for November (40-55°F).</li>
+            </ul>`
+        },
+        { title: 'Transportation Within Cities', content: `
+            <ul class="list-disc list-inside space-y-2">
+                <li><strong>Budapest:</strong> Use the BudapestGO app. A 24-hour pass is ~$7.50. Validate tickets!</li>
+                <li><strong>Vienna:</strong> Efficient U-Bahn, trams, buses. A 24-hour pass is ~$8.70. Validate tickets!</li>
+                <li><strong>Prague:</strong> Use the PID Lítačka app. A 24-hour pass is ~$5. Validate tickets to avoid heavy fines!</li>
+            </ul>`
+        },
+        { title: 'Safety, Culture & Money-Saving', content: `
+            <ul class="list-disc list-inside space-y-2">
+                <li><strong>Safety:</strong> The region is very safe. Watch for pickpockets in crowded areas. The EU emergency number is 112.</li>
+                <li><strong>Culture:</strong> Dress a bit more formally than typical US casual. Learn basic greetings. Tip 10% in restaurants.</li>
+                <li><strong>Hacks:</strong> Use public transport day passes. Eat lunch specials for main meals. Visit attractions early for fewer crowds/discounts.</li>
+            </ul>`
+        },
+        { title: 'Emergency Information', content: `
+            <ul class="list-disc list-inside space-y-2">
+                 <li><strong>Emergency Number (All Countries):</strong> 112</li>
+                 <li><strong>US Embassy Budapest:</strong> +36 1 475 4400</li>
+                 <li><strong>US Embassy Vienna:</strong> +43 1 31339 0</li>
+                 <li><strong>US Embassy Prague:</strong> +420 257 022 000</li>
+            </ul>`
+        }
+    ];
+
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    const itineraryContent = document.getElementById('itinerary-content');
+    const cityTabs = document.querySelectorAll('.city-tab');
+
+    function renderItinerary(city) {
+        itineraryContent.innerHTML = '';
+        const cityData = itineraryData[city];
+        if (!cityData) return;
+
+        const container = document.createElement('div');
+        container.className = 'space-y-4';
+
+        cityData.forEach((item, index) => {
+            const dayDiv = document.createElement('div');
+            dayDiv.className = 'border border-gray-200 rounded-lg overflow-hidden bg-white';
+            
+            const header = document.createElement('button');
+            header.className = 'day-accordion-header w-full text-left p-4 font-semibold text-lg hover:bg-gray-100 transition duration-200 flex justify-between items-center';
+            header.innerHTML = `<span>${item.day}</span> <span class="text-xl font-light transform transition-transform duration-300">+</span>`;
+            
+            const content = document.createElement('div');
+            content.className = 'day-accordion-content hidden p-4 border-t border-gray-200';
+            content.innerHTML = item.content;
+
+            dayDiv.appendChild(header);
+            dayDiv.appendChild(content);
+            container.appendChild(dayDiv);
+
+            header.addEventListener('click', () => {
+                const isOpen = content.classList.contains('hidden');
+                document.querySelectorAll('.day-accordion-content').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.day-accordion-header').forEach(el => {
+                    el.classList.remove('open');
+                    el.querySelector('span:last-child').style.transform = 'rotate(0deg)';
+                });
+                
+                if (isOpen) {
+                    content.classList.remove('hidden');
+                    header.classList.add('open');
+                    header.querySelector('span:last-child').style.transform = 'rotate(45deg)';
+                }
+            });
+        });
+        itineraryContent.appendChild(container);
+    }
+    
+    cityTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            cityTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            renderItinerary(tab.dataset.city);
+        });
+    });
+
+    renderItinerary('budapest');
+    document.querySelector('.city-tab[data-city="budapest"]').classList.add('active');
+    
+    const bookingsGrid = document.getElementById('bookings-grid');
+    bookingsData.forEach(booking => {
+        const card = document.createElement('div');
+        card.className = 'bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col';
+        card.innerHTML = `
+            <div class="flex items-center mb-4">
+                <span class="text-3xl mr-4">${booking.icon}</span>
+                <h3 class="text-xl font-bold">${booking.title}</h3>
+            </div>
+            <div class="text-gray-600 flex-grow">${booking.details}</div>
+        `;
+        bookingsGrid.appendChild(card);
+    });
+
+    const fixedCostsList = document.getElementById('fixed-costs-details');
+    const additionalCostsList = document.getElementById('additional-costs-details');
+    let totalFixed = 0;
+    fixedCosts.forEach(item => {
+        totalFixed += item.cost;
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center py-1';
+        li.innerHTML = `<span>${item.label}</span><span class="font-semibold">$${item.cost.toFixed(2)}</span>`;
+        fixedCostsList.appendChild(li);
+    });
+    document.getElementById('total-fixed-cost').textContent = `$${totalFixed.toFixed(2)}`;
+    
+    let totalAdditional = 0;
+    additionalCosts.forEach(item => {
+        totalAdditional += item.cost;
+        const li = document.createElement('li');
+        li.className = 'flex justify-between items-center py-1';
+        li.innerHTML = `<span>${item.label}</span><span class="font-semibold">$${item.cost.toFixed(2)}</span>`;
+        additionalCostsList.appendChild(li);
+    });
+    document.getElementById('total-additional-cost').textContent = `$${totalAdditional.toFixed(2)}`;
+
+    document.getElementById('grand-total-cost').textContent = `$${(totalFixed + totalAdditional).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+    const budgetChartCtx = document.getElementById('budgetChart').getContext('2d');
+    new Chart(budgetChartCtx, {
+        type: 'doughnut',
+        data: budgetChartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        font: { size: 12 },
+                        padding: 15,
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            if (label) { label += ': '; }
+                            if (context.parsed !== null) {
+                                const percentage = (context.parsed / totalAdditional * 100).toFixed(1);
+                                label += `$${context.parsed.toFixed(2)} (${percentage}%)`;
+                            }
+                            return label;
+                        }
+                    },
+                    bodyFont: { size: 14 },
+                    titleFont: { size: 16 }
+                }
+            }
+        }
+    });
+
+    const tipsAccordion = document.getElementById('tips-accordion');
+    tipsData.forEach(tip => {
+        const tipDiv = document.createElement('div');
+        tipDiv.className = 'bg-white border border-gray-200 rounded-lg overflow-hidden';
+        
+        const header = document.createElement('button');
+        header.className = 'w-full text-left p-4 font-semibold text-lg hover:bg-gray-100 transition duration-200 flex justify-between items-center';
+        header.innerHTML = `<span>${tip.title}</span> <span class="text-xl font-light transform transition-transform duration-300">+</span>`;
+
+        const content = document.createElement('div');
+        content.className = 'hidden p-4 border-t border-gray-200 text-gray-600';
+        content.innerHTML = tip.content;
+
+        tipDiv.appendChild(header);
+        tipDiv.appendChild(content);
+        tipsAccordion.appendChild(tipDiv);
+        
+        header.addEventListener('click', () => {
+            content.classList.toggle('hidden');
+            const icon = header.querySelector('span:last-child');
+            if (content.classList.contains('hidden')) {
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                icon.style.transform = 'rotate(45deg)';
+            }
+        });
+    });
+
+    const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+    const sections = document.querySelectorAll('main section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -80% 0px', threshold: 0 });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            if (mobileMenu.contains(link)) {
+                mobileMenu.classList.add('hidden');
             }
         });
     });
@@ -34,3 +578,4 @@
 </script>
 </body>
 </html>
+
