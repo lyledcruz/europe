@@ -13,7 +13,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Calm Harmony (Off-White, Dark Slate, Muted Olive, Soft Terracotta) -->
     <!-- Application Structure Plan: A single-page application with a sticky top navigation for smooth scrolling between five distinct sections: Overview, Itinerary, Bookings, Budget, and Travel Tips. This structure is chosen to provide a clear, task-oriented user flow for a first-time traveler. The Itinerary uses a nested tab/accordion system (City -> Day) to prevent information overload and allows users to focus on one day at a time. The goal is to present a comprehensive travel plan that is easy to digest and navigate. -->
@@ -49,6 +49,23 @@
             height: 400px;
             max-height: 70vh; 
         }
+
+        /* Styles for new Local Guides section */
+        #local-guides-content .tabnav { display: flex; justify-content: center; border-bottom: 2px solid #ccc; margin-bottom: 2em; }
+        #local-guides-content .city-tab { padding: 16px 24px; border: none; background: none; font-weight: bold; color: #555; cursor: pointer; border-bottom: 4px solid transparent; transition: color 0.3s, border-bottom 0.3s; outline: none; }
+        #local-guides-content .city-tab.active { color: #8A9A5B; border-bottom: 4px solid #8A9A5B; }
+        #local-guides-content .itinerary-section { display: none; }
+        #local-guides-content .itinerary-section.active { display: block; }
+        #local-guides-content h2 { font-size: 1.5rem; font-weight: 600; color: #3D4852; margin-bottom: 0.5em; margin-top: 1em; }
+        #local-guides-content h3 { font-size: 1.25rem; font-weight: 600; color: #3D4852; margin-bottom: 0.5em; margin-top: 1em; }
+        #local-guides-content table { border-collapse: collapse; margin-bottom: 2em; width: 100%; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        #local-guides-content th, #local-guides-content td { border: 1px solid #e2e8f0; padding: 12px; text-align: left; }
+        #local-guides-content th { background-color: #f8f9fa; }
+        #local-guides-content .section { margin-bottom: 2em; }
+        #local-guides-content ul { margin-top: 0.5em; list-style-type: disc; list-style-position: inside; }
+        #local-guides-content .tips { background: #f0f2e6; padding: 1em; border-radius: 6px; margin-top: 1em; }
+        #local-guides-content .highlight { color: #C06C59; font-weight: bold; }
+        #local-guides-content .small { font-size: 0.95em; color: #444; }
     </style>
 </head>
 <body class="antialiased">
@@ -62,6 +79,7 @@
                     <a href="#itinerary" class="nav-link text-gray-600 font-medium pb-1">Itinerary</a>
                     <a href="#bookings" class="nav-link text-gray-600 font-medium pb-1">Bookings</a>
                     <a href="#budget" class="nav-link text-gray-600 font-medium pb-1">Budget</a>
+                    <a href="#guides" class="nav-link text-gray-600 font-medium pb-1">Local Guides</a>
                     <a href="#tips" class="nav-link text-gray-600 font-medium pb-1">Travel Tips</a>
                 </div>
                 <div class="md:hidden">
@@ -75,6 +93,7 @@
                 <a href="#itinerary" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Itinerary</a>
                 <a href="#bookings" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Bookings</a>
                 <a href="#budget" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Budget</a>
+                <a href="#guides" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Local Guides</a>
                 <a href="#tips" class="block py-2 px-4 text-sm text-gray-600 hover:bg-gray-100 rounded">Travel Tips</a>
             </div>
         </nav>
@@ -193,7 +212,326 @@
             </div>
         </section>
 
-        <section id="tips" class="py-16 md:py-24">
+        <section id="guides" class="py-16 md:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Deep-Dive Local Guides</h2>
+                    <p class="text-lg text-gray-600 max-w-3xl mx-auto mt-4">In-depth recommendations for sights, local eats, and hidden gems, based on the guides you provided.</p>
+                </div>
+
+                <div class="max-w-4xl mx-auto bg-white p-6 md:p-8 rounded-lg shadow-md" id="local-guides-content">
+                    <div class="tabnav">
+                        <button class="city-tab active" data-city="budapest-guide">Budapest</button>
+                        <button class="city-tab" data-city="vienna-guide">Vienna</button>
+                        <button class="city-tab" data-city="prague-guide">Prague</button>
+                    </div>
+                    
+                    <div id="budapest-guide" class="itinerary-section active">
+                        <h2>Budapest 3-Day Local Guide: Sights, Eateries, Ruin Bars, Restaurants & Tips</h2>
+                        <p>Compiled from the “Budapest 3 Day Travel Guide with PRICES and Budget | A Local's Guide to Hungary” video.<br>
+                          <b>All sites, eateries, ruin bars, restaurants, and local tips mentioned are included.</b>
+                        </p>
+                        <div class="section">
+                          <h3>Day 1 – Pest Side: Markets, Historic Landmarks, Classic Eateries</h3>
+                          <ul>
+                            <li><b>Grand Market Hall:</b> Explore for culture/souvenirs. <span class="small">Tip: Avoid eating here due to high prices and quality.</span></li>
+                            <li><b>Liberty Bridge:</b> Unique green-painted bridge, iconic architecture.</li>
+                            <li><b>Historic Pest Wall & Bastian Street Area:</b> See the old city wall, walk narrow streets, parks, and squares.</li>
+                            <li><b>Norma Bakery:</b> Hip Nordic-style bakery — pastries/baked goods.</li>
+                            <li><b>BOS:</b> Hungarian sausage, bread, mustard, pickled cabbage.</li>
+                            <li><b>Specialty Coffee:</b> Various local shops (Espresso Embassy recommended).</li>
+                            <li><b>Chimney Cake Stand:</b> Try classic Hungarian chimney cake (kürtőskalács) — get classic flavors only.</li>
+                            <li><b>Danube Promenade:</b> Walk for views of Buda Castle, Chain Bridge, sculptures.</li>
+                            <li><b>St Stephen’s Basilica:</b> Mezmerizing interior, relic of St Stephen’s hand. <span class="small">Tip: Cheaper ticket for interior only; combined ticket for panorama can be skipped.</span></li>
+                            <li><b>Simon Burger/Hot Dog:</b> Local chain, quick burgers or hot dogs at lunch.</li>
+                            <li><b>Liberty Square:</b> Chill, finish chimney cake.</li>
+                            <li><b>Hungarian Parliament:</b> See from outside (guided tours inside must be booked online).</li>
+                            <li><b>Shoes on the Danube Memorial:</b> WWII memorial.</li>
+                            <li><b>PO Road (Margaret Bridge) - Old-school Hungarian Restaurant:</b> Traditional dinner. <br>
+                              <span class="small">- Place with red checkered tablecloths, shot of pálinka (fruit liquor), beef pörkölt (stew) with dumplings, local wine.</span>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="section">
+                          <h3>Day 2 – Buda Side: Castle District, Museums, Modern Restaurants</h3>
+                          <ul>
+                            <li><b>Castle District:</b> UNESCO world heritage area.</li>
+                            <li><b>Buda Castle Palace:</b> Admire architecture, city views. Optional museums inside.</li>
+                            <li><b>Lisboa Bakery (Ferenc tér):</b> Breakfast baked goods.</li>
+                            <li><b>Fountain of King Matthias:</b> Story and photo spot.</li>
+                            <li><b>Lion Courtyard:</b> Pass Lions gate, peaceful space.</li>
+                            <li><b>Castle Restoration Sites:</b> Observe ongoing reconstructions.</li>
+                            <li><b>Cave Walking Tour:</b> Highly recommended; book online (Get Your Guide). <span class="small">Other options: Hospital in the Rock (WWII history, nuclear bunker), Labyrinth (entertainment, self-walk).</span></li>
+                            <li><b>Coffee and Sweets:</b> Try “rétes” (strudel, poppyseed/curd).</li>
+                            <li><b>Ruszwurm Confectionery:</b> Budapest’s oldest confectionery — famous “krémes” (cream cake).</li>
+                            <li><b>Matthias Church:</b> Iconic church, Black Hussar Tower, city views.</li>
+                            <li><b>Fisherman’s Bastion:</b> Towers, panoramic views. <span class="small">Tip: Visit after closure or early morning for free access.</span></li>
+                            <li><b>Vakaru/Blind Crow (Vigadó Square):</b> Contemporary Hungarian restaurant — modern twist on local food, stylish décor.</li>
+                            <li><b>Ban (riverside):</b> Great night view of Parliament.</li>
+                          </ul>
+                        </div>
+                        <div class="section">
+                          <h3>Day 3 – Relax: Baths, City Park, Sweets, Restaurants, Ruin Bars, Nightlife</h3>
+                          <ul>
+                            <li><b>Széchenyi Thermal Bath:</b> Europe’s largest medicinal bath, indoor/outdoor pools.<br>
+                              <span class="small">Tips: Slippers & towel required (rentals available at premium). Swimming caps only needed for swimming pool. Visit early to avoid crowds.</span>
+                            </li>
+                            <li><b>Langos Stalls:</b> Deep-fried flatbread with sour cream and cheese (Garlic option available). Find at many spots or Google “langos”.</li>
+                            <li><b>City Park (Városliget):</b> Museums (House of Music, Museum of Fine Arts, National Art Gallery, Zoo), lush green space, scenic lake. <span class="small">Tip: Great for spending a day, casual drinks/food spots throughout park.</span></li>
+                            <li><b>Vajdahunyad Castle:</b> Architecture inspired by Hungarian/Romanian history.</li>
+                            <li><b>Heroes' Square:</b> Statues of Hungarian kings/statesmen. Connection to Andrássy Avenue.</li>
+                            <li><b>Historic Subway:</b> First underground in Continental Europe.</li>
+                            <li><b>Muvesz Café (Andrássy Avenue):</b> Hungarian cakes, sweets, coffee. Famous with artists/writers.</li>
+                            <li><b>Opera House & Lazar Street:</b> Artistic walk, catches beautiful Basilica view.</li>
+                            <li><b>B’s Presley Restaurant (Lazar Street):</b> Local dishes, sometimes live music, friendly service.</li>
+                            <li class="highlight">Simpatica Ruin Bar:</li>
+                            <ul>
+                              <li class="small">Pioneer of Budapest’s ruin bar vibe. Artistic décor, drinks and bar food. Tip: Card payment terminals allow tipping – check % before confirming!</li>
+                            </ul>
+                            <li class="highlight">Ruin Bar District in Jewish Quarter:</li>
+                            <ul>
+                              <li class="small">Historic WWII Jewish Ghetto area, now home to ruin bars like <b>Szimpla Kert</b> (most famous), street art, nightlife, and international vibe.</li>
+                            </ul>
+                            <li><b>Dohány Street Synagogue:</b> Largest in Europe, historic site & artsy surroundings.</li>
+                            <li><b>Nighttime River Bank Walk or Danube River Cruise:</b> See illuminated city sites. Tip: Walk for budget option, cruise for unique experience (book ahead online).</li>
+                          </ul>
+                        </div>
+                        <div class="section">
+                          <h3>Eateries, Restaurants, Ruin Bars (Complete List)</h3>
+                          <table>
+                            <tr>
+                              <th>Name</th>
+                              <th>Type</th>
+                              <th>Location</th>
+                              <th>Recommendation</th>
+                            </tr>
+                            <tr><td>Norma Bakery</td>        <td>Bakery</td>     <td>Historic Pest</td>         <td>Nordic-style pastries, snacks</td></tr>
+                            <tr><td>BOS</td>                 <td>Snack Bar</td>  <td>Historic Pest</td>         <td>Hungarian sausage, bread, pickles</td></tr>
+                            <tr><td>Simon Burger/Hot Dog</td><td>Fast Food</td>  <td>Central Pest</td>          <td>Burgers, hot dogs</td></tr>
+                            <tr><td>Espresso Embassy</td>    <td>Café</td>       <td>Near Parliament</td>       <td>Specialty coffee, espresso</td></tr>
+                            <tr><td>Chimney Cake Stand</td>  <td>Street food</td><td>Historic Pest</td>         <td>Kürtőskalács (chimney cake)</td></tr>
+                            <tr><td>PO Road Hungarian Restaurant</td><td>Classic Restaurant</td><td>Margaret Bridge Area</td><td>Beef pörkölt, dumplings, wine, pálinka</td></tr>
+                            <tr><td>Lisboa Bakery</td>       <td>Bakery</td>     <td>Ferenc tér, Buda</td>      <td>Breakfast baked goods</td></tr>
+                            <tr><td>Ruszwurm Confectionery</td><td>Confectionery</td><td>Castle District</td><td>Krémes (cream cake), strudel</td></tr>
+                            <tr><td>Vakaru/Blind Crow</td>   <td>Modern Restaurant</td><td>Vigadó Square</td><td>Contemporary Hungarian food, stylish décor</td></tr>
+                            <tr><td>Langos Stands</td>       <td>Street Food</td><td>Various, City Park</td>     <td>Langos (fried flatbread)</td></tr>
+                            <tr><td>Muvesz Café</td>         <td>Café</td>      <td>Andrássy Avenue</td>        <td>Hungarian sweets, coffee</td></tr>
+                            <tr><td>B’s Presley Restaurant</td><td>Restaurant</td><td>Lazar Street (Opera House)</td><td>Local dishes, friendly service, live music</td></tr>
+                            <tr class="highlight"><td>Simpatica Ruin Bar</td><td>Ruin Bar</td><td>Jewish Quarter</td><td>Pioneer ruin bar, unique décor, drinks, art</td></tr>
+                            <tr class="highlight"><td>Szimpla Kert & other Jewish Quarter Ruin Bars</td><td>Ruin Bar</td><td>Jewish Quarter</td><td>Most famous, eclectic interiors, vibrant nightlife</td></tr>
+                          </table>
+                        </div>
+                        <div class="section tips">
+                          <h3>Local Tips & Budget Guidance</h3>
+                          <ul>
+                            <li><b>Souvenirs:</b> Avoid buying from Grand Market Hall, expensive compared to elsewhere (e.g., Szentendre).</li>
+                            <li><b>Water fountains:</b> “Budapest Go” App shows fountain locations for refilling bottles.</li>
+                            <li><b>Transport:</b> Use public transport (BKK). Tickets ~350 HUF/ride, consider passes. “Budapest Go” App includes stops and fountain locations.</li>
+                            <li><b>Currency:</b> Hungarian Forint (HUF).</li>
+                            <li><b>Book ahead online</b> for Parliament, Cave Tours, Baths.</li>
+                            <li><b>Tipping in Bars:</b> Card payment terminals allow you to add tip; check % before confirming.</li>
+                            <li><b>Baths:</b> Bring slippers & towel or be ready to pay for rental.</li>
+                            <li><b>Ruin Bars:</b> Mostly in Jewish Quarter; explore for street art and nightlife near the Dohany Synagogue.</li>
+                            <li><b>River Cruise:</b> Walk the Danube for a budget option or book an evening cruise for a unique experience.</li>
+                            <li><b>Budget, per day (excluding accommodation):</b>
+                              <ul>
+                                <li>Day 1: ~10,000–15,000 HUF (meals, tickets, snacks)</li>
+                                <li>Day 2: ~12,000–18,000 HUF (castle, cave, sweets, dinner)</li>
+                                <li>Day 3: ~15,000–22,000 HUF (baths, ruin bars, dinner)</li>
+                              </ul>
+                            </li>
+                          </ul>
+                        </div>
+                        <p class="small"><b>All places, restaurants, ruin bars, tips, transport, specialty dishes, and advice from the video are included above for an authentic trip experience!</b></p>
+                    </div>
+
+                    <div id="vienna-guide" class="itinerary-section">
+                        <h2>Vienna 2-Day Guide: Sights, Eateries, Restaurants, Bars & Local Tips</h2>
+                        <p>Based on “How to Spend 2 Days in VIENNA Austria | Travel Itinerary.” All recommended venues, rooftop bars, food, transport tips and local advice included.</p>
+                        <div class="section">
+                          <h3>Day 1: Historic Treasures & City Landmarks</h3>
+                          <ul>
+                            <li><b>Palace of Justice (Justizpalast):</b> Grand staircase, Lady Justice statue. <b>Free entry, Mon-Fri 7:30am–3:30pm</b></li>
+                            <li><b>Austrian National Library (State Hall):</b> 200,000+ books, Venetian globes, fresco ceiling. <b>$11 USD</b>, Tue–Sun, 10am–6pm</li>
+                            <li><b>Michaelerplatz:</b> Gateway square, turquoise dome, entrance to Hofburg Palace/Sisi Museum, Spanish Riding School</li>
+                            <li><b>Hofburg Palace:</b> Imperial apartments, Silver Collection, Sisi Museum. <b>$17 USD, open daily</b> (online ticketing recommended)</li>
+                            <li><b>Burggarten:</b> Mozart and Franz Josef statues, benches for rest. Option: <b>Schmetterlinghaus (Butterfly House)</b> in Art Nouveau palm house, <b>$9.72 USD, daily 10am–4pm</b></li>
+                            <li><b>Café Central:</b> Iconic coffee house, Viennese food, patisserie, historic gathering spot (Freud, Trotsky). <b>15-min walk from Burggarten</b></li>
+                            <li><b>Votive Church (Votivkirche):</b> Free hall entry, Neo-Gothic style, Tues–Fri 11am–6pm, Sat 11am–7pm, Sun 9am–1pm</li>
+                            <li><b>Café Francais:</b> French restaurant beside Sigmund-Freud-Park, great Votivkirche views</li>
+                            <li><b>Rathaus (City Hall):</b> Tower topped with Rathausman. <b>Free tours Mon/Wed/Fri 1pm</b>, hosts events like Christmas market, Film Festival</li>
+                            <li><b>Museum of Natural History:</b> Dinosaur skeletons, meteorites, Wed–Mon 9am–6:30pm. <b>$17 USD</b></li>
+                            <li><b>Kunsthistorisches Museum:</b> Paintings, antiquities, coins, 10am–6pm (Thu till 9pm). <b>$22 USD</b></li>
+                            <li><b>Dinner:</b> <b>Le Burger</b> (Rotenturmstr.), extensive menu (burgers, sides) <b>$15–20 USD</b>. <b>Boxwood</b> for seafood/meat/vegetarian options, <b>$20–25 USD</b>.</li>
+                            <li><b>Nightlife/Rooftops:</b> <b>ORGANICS Sky Garden</b> (fruity summer cocktails), <b>Lamee Rooftop</b> (Votivkirche views), <b>Atmosphere Rooftop Bar</b> (glamour). Cocktails: <b>$12–18 USD</b></li>
+                          </ul>
+                        </div>
+                      
+                        <div class="section">
+                          <h3>Day 2: Iconic Landmarks, Palaces & Parks</h3>
+                          <ul>
+                            <li><b>Schönbrunn Palace:</b> Imperial & Grand Tours (22–40 rooms), <b>$24–28 USD</b>, daily 9am–5pm. <b>Gardens free, Gloriette viewpoint</b></li>
+                            <li><b>Schönbrunn Palmenhaus:</b> Exotic plants, daily 10am–4:30pm, <b>$7 USD</b></li>
+                            <li><b>Karlskirche:</b> Baroque dome, Classical spires, Mon–Sat 9am–6pm, Sun 12–7pm, <b>$10 USD</b>. U4 to Karlsplatz</li>
+                            <li><b>Belvedere Museum:</b> Upper Belvedere ($17 USD), Belvedere 21 ($9.50 USD), combo ticket ($24.50 USD), houses "The Kiss" by Klimt</li>
+                            <li><b>Vienna State Opera:</b> Architecture, concerts, guided tours ($14 USD, online ticketing). Tram from Schloss Belvedere to Oper/Karlsplatz</li>
+                            <li><b>St. Stephen’s Cathedral:</b> Free entry (daily 9am–5:30pm), towers ($6.5 USD, cash only at entrance)</li>
+                            <li><b>Anker Clock:</b> Photo stop, 1914 clock with rotating historic figures, 5-min walk from the cathedral</li>
+                            <li><b>Prater Amusement Park:</b> Entry free, pay per ride, Ferris Wheel (since 1897), open till 10pm. Metro U1 to Praterstern</li>
+                            <li><b>Dinner:</b> <b>Inn Reinthaler</b> classic Viennese/Austrian, 5-min walk from Prater, <b>$20–30 USD</b></li>
+                            <li><b>Nightlife:</b> Rooftop cocktail option for city views</li>
+                          </ul>
+                        </div>
+                        <div class="section">
+                          <h3>Eateries, Cafés & Rooftop Bars Table</h3>
+                          <table>
+                            <tr><th>Name</th><th>Type</th><th>Notes</th></tr>
+                            <tr><td>Café Central</td><td>Café/Patisserie</td><td>Historic, classic sweets, Viennese cuisine</td></tr>
+                            <tr><td>Café Francais</td><td>Restaurant</td><td>French, view of Votivkirche</td></tr>
+                            <tr><td>Le Burger</td><td>Restaurant</td><td>Rotenturmstrasse, extensive burgers, sides</td></tr>
+                            <tr><td>Boxwood</td><td>Restaurant</td><td>Seafood, meat, vegetarian, charming ambiance</td></tr>
+                            <tr><td>Inn Reinthaler</td><td>Restaurant</td><td>Viennese classics, near Prater</td></tr>
+                            <tr><td>ORGANICS Sky Garden</td><td>Rooftop Bar</td><td>Summer cocktails, skyline views</td></tr>
+                            <tr><td>Lamee Rooftop</td><td>Rooftop Bar</td><td>Night views of Votivkirche</td></tr>
+                            <tr><td>Atmosphere Rooftop Bar</td><td>Rooftop Bar</td><td>Glam vibes, panoramic city</td></tr>
+                          </table>
+                        </div>
+                        <div class="section tips">
+                          <h3>Transport, Money & Accommodation</h3>
+                          <ul>
+                            <li><b>Vienna City Card:</b> $20 USD/24hr, unlimited public transport</li>
+                            <li><b>Bikes:</b> Rent ~$15 USD/day, bike-friendly streets</li>
+                            <li><b>Airport:</b> CAT train (16 min, $13 USD), S-Bahn trains also available</li>
+                            <li><b>Where to Stay:</b> Innere Stadt (historic/luxury, $150–300 USD/night), Neubau/Leopoldstadt (local vibe, $100–200 USD/night)</li>
+                          </ul>
+                        </div>
+                        <div class="section tips">
+                          <h3>Local Tips & Budget Guidance</h3>
+                          <ul>
+                            <li>All museum and palace admissions listed in USD for easy budgeting</li>
+                            <li>Most sites open early; arrive at opening for quieter experience</li>
+                            <li>Bikes and city card are cost-effective for city travel</li>
+                            <li>Vienna’s rooftop bars are great for summer evenings</li>
+                            <li>Admission fees for towers are <b>cash only</b>; bring cash for minor sites</li>
+                            <li>Most major dining spots accept cards</li>
+                            <li>Plan/Book major museums and palaces ahead online for best availability</li>
+                            <li>Public transport network is extensive, no need for taxis from airport/city center</li>
+                            <li>MuseumsQuartier offers choice of art, natural history—choose what interests you most</li>
+                          </ul>
+                          <span class="small"><b>All tips, eateries, restaurants, rooftop bars, transport, specialty dishes, and advice from the video are included for the ultimate 2-day Vienna experience!</b></span>
+                        </div>
+                    </div>
+
+                    <div id="prague-guide" class="itinerary-section">
+                        <h2>Prague Guide: Sights, Eats, Pubs, Restaurants & Local Tips</h2>
+                        <p>Based on the “Honest Prague Guide: The Only Video You Need to Watch.” All recommended eateries, pubs, restaurants, and tips are included.</p>
+                        <div class="section">
+                          <h3>Getting In & Around</h3>
+                          <ul>
+                            <li><b>Airport → City Centre:</b> Take Bus 119 (now often replaced with Trolleybus 59), connect to Green Metro; ~35 min, <b>ticket: 40 CZK</b>.</li>
+                            <li><b>Public Transport:</b> Reliable, fast, cheap. Buy 1-day or 3-day ticket at airport/train station, validate before first ride. <b>Single ticket: 40 CZK. Inspectors active.</b></li>
+                            <li><b>Avoid:</b> Taxis (especially at train stations—overpriced), Hop-On-Hop-Off buses, Airport Express bus.</li>
+                            <li><b>City is walkable,</b> trams and metro reach all areas. Ferries & buses available.</li>
+                          </ul>
+                        </div>
+                      
+                        <div class="section">
+                          <h3>Money & Payments</h3>
+                          <ul>
+                            <li><b>Currency:</b> Czech crowns (<b>CZK</b>), not Euros/Dollars.</li>
+                            <li><b>Best Tip:</b> Pay by card/phone ("tap" culture). Rarely need cash.</li>
+                            <li><b>If exchanging cash:</b> Avoid airport & most central exchange offices, rates are bad even if “0% fee.”</li>
+                            <li><b>If using ATM:</b> Always <b>decline conversion</b> to avoid extra fees. Prefer big-bank ATMs (ČSOB, KB, Raiffeisen).</li>
+                            <li><b>Never exchange money on the street.</b></li>
+                          </ul>
+                        </div>
+                      
+                        <div class="section">
+                          <h3>Drinks</h3>
+                          <ul>
+                            <li><b>Tap water is safe to drink.</b> Water fountains and sinks in Prague buildings are potable. Avoid the river.</li>
+                            <li><b>Beer:</b> Local craft recommended. Try original Pilsner, Pilsner Urquell. Average pub price: <b>~60 CZK</b>.</li>
+                            <li><b>Moravian Wine,</b> Czech Kofola (local cola). Absinthe in shops: touristy, not real, overpriced.</li>
+                            <li><b>Alcohol:</b> Not legal to drink on Prague streets. Enjoy in bars/pubs only.</li>
+                          </ul>
+                        </div>
+                      
+                        <div class="section">
+                          <h3>Food, Restaurants & Cafés</h3>
+                          <ul>
+                            <li><b>Czech Classics:</b> Dumplings, sauces, meats. Local recommended eateries: <b>Lokál</b> (multiple locations), <b>Kantýna</b>, U Medvídků, U Kroka, Mlejnice, U Parlamentu, U Šumavy, Čestr, Krčma, Kuchyň, U Pinkasů, Naše Maso, and Café Savoy.</li>
+                            <li><b>Cafés/Sweets:</b> Real Czech pastries (koláče, větrník). Sweet shops in city center; avoid Trdelník (not Czech, for tourists).</li>
+                            <li><b>International eats:</b> Plenty (pizza, burger, vegan, halal, etc.). Big city, check Google Maps/Tripadvisor for reviews before dining.</li>
+                            <li><b>Trdelník ("chimney cake") is for tourists,</b> not Czech tradition.</li>
+                            <li><b>Vegetarian & Vegan:</b> Options widely available.</li>
+                          </ul>
+                          <div class="section">
+                            <h4>Prague Eateries Table</h4>
+                            <table>
+                              <tr><th>Name</th><th>Type</th><th>Notes</th></tr>
+                              <tr><td>Lokál</td><td>Traditional Czech</td><td>Modern chain, several locations, daily local menus, great beer</td></tr>
+                              <tr><td>Kantýna</td><td>Czech, steakhouse</td><td>Czech meats, self-serve butcher counter</td></tr>
+                              <tr><td>U Medvídků</td><td>Czech Pub</td><td>Historic brewery, authentic fare</td></tr>
+                              <tr><td>U Kroka</td><td>Casual Czech</td><td>Homestyle dishes, near Vyšehrad</td></tr>
+                              <tr><td>Mlejnice</td><td>Czech</td><td>Hearty classics, central</td></tr>
+                              <tr><td>U Parlamentu</td><td>Pub</td><td>Local spot, dumplings</td></tr>
+                              <tr><td>U Šumavy</td><td>Pub</td><td>Wood-panels, daily Czech menu</td></tr>
+                              <tr><td>Čestr</td><td>Modern Czech</td><td>Steakhouse, local beef</td></tr>
+                              <tr><td>Krčma</td><td>Rustic Czech</td><td>Old cellar, medieval ambiance</td></tr>
+                              <tr><td>Kuchyň</td><td>Castle-side Czech</td><td>View of Prague Castle, traditional recipes</td></tr>
+                              <tr><td>U Pinkasů</td><td>Brewpub</td><td>Pilsner Urquell straight from tank</td></tr>
+                              <tr><td>Naše Maso</td><td>Butcher + Eatery</td><td>Burgers, sausages; buy meat to go!</td></tr>
+                              <tr><td>Café Savoy</td><td>Café/Patisserie</td><td>Historic, French style, Czech sweets</td></tr>
+                            </table>
+                            <span class="small">Many others for pizza, burgers, vegan, halal; check reviews.</span>
+                          </div>
+                        </div>
+                      
+                        <div class="section">
+                          <h3>Pubs, Bars, Nightlife</h3>
+                          <ul>
+                            <li><b>Traditional beer halls:</b> Lokál, U Medvídků, U Pinkasů, Kantýna, U Parlamentu.</li>
+                            <li><b>Craft Beer/Microbreweries:</b> Many—try the Honest Prague Guide Beer Map.</li>
+                            <li><b>Absinthe bars:</b> Overpriced tourist trap, not recommended for authentic experience.</li>
+<li><b>Prague nightlife:</b> Many lively venues, but stick to pubs, beer halls, not street drinking.</li>
+                          </ul>
+                        </div>
+                      
+                        <div class="section">
+                          <h3>Sightseeing & Safety</h3>
+                          <ul>
+                            <li>Must-see: <b>Charles Bridge, Prague Castle, Astronomical Clock</b></li>
+                            <li>Crowds: Arrive early or late at big sights for best experience.</li>
+                            <li>Safety: Prague is safe; pickpockets exist in crowded/tourist areas. Don’t bring extra cash or valuables; watch your bag in restaurants.</li>
+                            <li>Local transport: Trams don’t stop at crosswalks; mind tracks.</li>
+                            <li>Lime scooters are <b>NOT legal</b> on pedestrian zones or sidewalks, use on roads only.</li>
+                            <li><b>Most central hotels, sights, and restaurants are walkable!</b></li>
+                          </ul>
+                        </div>
+                      
+                        <div class="section tips">
+                          <h3>Local Tips & Budget Guidance</h3>
+                          <ul>
+                            <li><b>Souvenirs:</b> Skip touristy shops, buy authentic Czech crafts if interested.</li>
+                            <li><b>No Uber/Taxis needed;</b> public transport covers everywhere.</li>
+                            <li><b>Water:</b> Safe, fountains available.</li>
+                            <li><b>Alcohol laws:</b> Don’t drink on the street.</li>
+                            <li><b>Public transport:</b> Validate tickets; inspectors do check!</li>
+                            <li><b>Language:</b> A few Czech phrases (“Dobrý den” = hello, “Děkuji” = thank you, “Prosím” = please) are appreciated by locals.</li>
+                            <li><b>Budget:</b> Beer ~60 CZK, food at local (<b>Lokál</b>, etc.) ~200–400 CZK. Avoid overpriced tourist restaurants in city center.</li>
+                            <li><b>Exchange money:</b> Only at banks or Honest Guide listed spots.</li>
+                            <li>Leave valuables at your hotel; don’t carry excess cash.</li>
+                            <li>To ask locals for food recs, just ask! They’re helpful.</li>
+                          </ul>
+                          <span class="small"><b>All tips, eateries, restaurants, bars, transport, specialty dishes, and advice from the Honest Guide video are included for an authentic Prague experience!</b></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="tips" class="py-16 md:py-24 bg-gray-50">
             <div class="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <h2 class="text-3xl md:text-4xl font-bold tracking-tight">First-Timer's Travel Tips</h2>
@@ -217,30 +555,30 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const itineraryData = {
         budapest: [
-            { day: 'Day 1: Arrival & First Festive Glimpse (Nov 15)', content: `
+            { day: 'Day 1: Arrival & Pest Explore (Nov 15)', content: `
                 <ul class="space-y-4 text-gray-600">
                     <li><strong class="font-semibold text-gray-800">✈️ Morning:</strong> Arrive at Budapest (BUD) at 11:40 AM.</li>
-                    <li><strong class="font-semibold text-gray-800">🏨 Afternoon:</strong> Check into Wombat's City Hostel (from 2:00 PM). Rest and recover from jet lag.</li>
-                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> The Vörösmarty Square Christmas Market should be open! Take a gentle walk there. The atmosphere is magical at night. Grab a chimney cake (Kürtőskalács) and mulled wine (forralt bor) for a perfect first taste of Hungary.</li>
-                    <li><strong class="font-semibold text-gray-800">🌙 Goal:</strong> Early night to adjust to the new time zone.</li>
+                    <li><strong class="font-semibold text-gray-800">🏨 Afternoon:</strong> Check into Wombat's City Hostel (from 2:00 PM).</li>
+                    <li><strong class="font-semibold text-gray-800">🚶 Late Afternoon:</strong> Start exploring! Walk the **Danube Promenade** for great views. Cross the iconic **Liberty Bridge**. The **Grand Market Hall** is right there, but be aware it closes around 3 PM on Saturdays.</li>
+                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> Head to the **Vörösmarty Square Christmas Market**. The atmosphere is magical. Grab a **Chimney Cake (Kürtőskalács)** and mulled wine (forralt bor). For dinner, you can eat at the market or find a traditional restaurant (look for red checkered tablecloths!).</li>
                     <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$25</li>
                 </ul>` },
-            { day: 'Day 2: Buda, Pest & Christmas Lights (Nov 16)', content: `
+            { day: 'Day 2: Full Day on the Buda Side (Nov 16)', content: `
                 <ul class="space-y-4 text-gray-600">
-                    <li><strong class="font-semibold text-gray-800">🌅 Morning (9am-12pm):</strong> Head to the Buda side. Visit Fisherman's Bastion, Matthias Church, and explore the Buda Castle complex.</li>
-                    <li><strong class="font-semibold text-gray-800">🌉 Afternoon (12pm-6pm):</strong> Take the Sikló (funicular) down, cross the Chain Bridge, see the Parliament, and visit St. Stephen's Basilica.</li>
-                    <li><strong class="font-semibold text-gray-800">🎄 Evening:</strong> Head to the Christmas market in front of St. Stephen's Basilica. It's famous for its stunning light show projected onto the basilica's facade. It's a great spot for dinner from the food stalls.</li>
-                    <li><strong class="font-semibold text-gray-800">🍻 Nightlife:</strong> Afterwards, head to Szimpla Kert, the original ruin bar.</li>
-                    <li><strong class="font-semibold text-gray-800">🚇 Transport:</strong> Get a 24-hour Budapest travel card (~$7.50).</li>
-                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$45</li>
+                    <li><strong class="font-semibold text-gray-800">🌅 Morning (9am-1pm):</strong> Head to the **Castle District** (UNESCO World Heritage). Explore the **Buda Castle Palace** grounds, see the **Matthias Fountain** and **Lion Courtyard**.</li>
+                    <li><strong class="font-semibold text-gray-800">⛪ Afternoon (1pm-5pm):</strong> Visit the iconic **Matthias Church**. Then, walk to **Fisherman's Bastion** for the best panoramic views. (Tip: Free to visit some parts early morning or late evening).</li>
+                    <li><strong class="font-semibold text-gray-800">🍰 Coffee Break:</strong> Stop at **Ruszwurm Confectionery**, Budapest’s oldest pastry shop, for a famous “krémes” (cream cake) or “rétes” (strudel).</li>
+                    <li><strong class="font-semibold text-gray-800">🍽️ Dinner & Evening:</strong> Head back to Pest. See the **Hungarian Parliament** and **Shoes on the Danube** memorial at dusk. For dinner, try a contemporary Hungarian restaurant like **Vakaru/Blind Crow**.</li>
+                    <li><strong class="font-semibold text-gray-800">🚇 Transport:</strong> Get a 24-hour Budapest travel card (~$7.50). Use the **BudapestGO app**!</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$60 (includes castle area tickets)</li>
                 </ul>` },
-            { day: 'Day 3: Culture & Relaxation (Nov 17)', content: `
+            { day: 'Day 3: Baths, Culture & Ruin Bars (Nov 17)', content: `
                 <ul class="space-y-4 text-gray-600">
-                    <li><strong class="font-semibold text-gray-800">🏛️ Morning (9am-1pm):</strong> Visit Heroes' Square, then head to the famous Szechenyi Thermal Baths for a relaxing soak (~$35).</li>
-                    <li><strong class="font-semibold text-gray-800">🌳 Afternoon (1pm-6pm):</strong> Walk through Városliget (City Park), see Vajdahunyad Castle, and explore the Central Market Hall for lunch and last-minute souvenirs.</li>
-                    <li><strong class="font-semibold text-gray-800">🍽️ Dinner:</strong> Check out Mazel Tov for Mediterranean fusion (~$30).</li>
-                    <li><strong class="font-semibold text-gray-800">🍸 Evening:</strong> Enjoy fantastic views and cocktails at Leo Rooftop Bar (~$8-12 per drink).</li>
-                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$90</li>
+                    <li><strong class="font-semibold text-gray-800">🛁 Morning (9am-12pm):</strong> Relax at **Széchenyi Thermal Bath**, Europe’s largest. (Tip: Bring slippers & towel to save money. Visit early!). Grab a **Lángos** (fried bread with sour cream & cheese) from a nearby stall after.</li>
+                    <li><strong class="font-semibold text-gray-800">🌳 Afternoon (12pm-4pm):</strong> Explore the **City Park (Városliget)**, see **Vajdahunyad Castle**, and **Heroes' Square**. Take the **Historic Subway** (M1 line) back down **Andrássy Avenue** (a UNESCO street).</li>
+                    <li><strong class="font-semibold text-gray-800">🕍 Late Afternoon (4pm-6pm):</strong> Visit **St. Stephen's Basilica** (see the relic!) and its Christmas Market. Then walk through the **Jewish Quarter** and see the **Dohány Street Synagogue** (largest in Europe) from the outside.</li>
+                    <li><strong class="font-semibold text-gray-800">🍻 Evening:</strong> This is the night for **Ruin Bars**! Explore the Jewish Quarter. Start at **Szimpla Kert** (the most famous) or **Simpatica**. Enjoy the unique art and have a few drinks.</li>
+                    <li><strong class="font-semibold text-gray-800">💰 Daily Budget:</strong> ~$90 (includes bath ticket)</li>
                 </ul>` },
         ],
         vienna: [
@@ -292,7 +630,7 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     const bookingsData = [
-        { icon: '✈️', title: 'Round-trip Flights', details: '<strong>Cost:</strong> $723.93 per person<br><strong>Confirmation:</strong> (Delta)<br><strong>Outbound:</strong> Nov 14, DFW ➔ BUD<br><strong>Return:</strong> Nov 23, PRG ➔ DFW' },
+        { icon: '✈️', title: 'Round-trip Flights', details: '<strong>Cost:</strong> $723.93 per person<br><strong>Confirmation:</strong> HG5IIL (Delta)<br><strong>Outbound:</strong> Nov 14, DFW ➔ BUD<br><strong>Return:</strong> Nov 23, PRG ➔ DFW' },
         { icon: '🏨', title: 'Hotel: Budapest', details: '<strong>Name:</strong> Wombat\'s City Hostel Budapest<br><strong>Your Share (1/2):</strong> $140.50<br><strong>Dates:</strong> Nov 15 - Nov 18 (3 nights)' },
         { icon: '🚆', title: 'Trains: BUD-VIE-PRG', details: '<strong>Operator:</strong> RegioJet<br><strong>Your Share (1/2):</strong> $45.80<br><strong>Dates:</strong> Nov 18 & Nov 20' },
         { icon: '🏨', title: 'Hotel: Vienna', details: '<strong>Name:</strong> Wombat\'s City Hostel Vienna<br><strong>Your Share (1/2):</strong> $115.53<br><strong>Dates:</strong> Nov 18 - Nov 20 (2 nights)' },
@@ -337,6 +675,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 <li><strong>Eat Everything:</strong> The markets are a food paradise. From sausages to gingerbread to chimney cakes, it's a great way to sample local festive treats and can often replace a restaurant dinner.</li>
             </ul>`
         },
+        { 
+            title: '🚗 Optional Day Trips (Rental Car)', 
+            content: `
+                <p class="mb-3"><strong>Rental Car Advisory:</strong> You MUST get an **International Driving Permit (IDP)** from AAA before you leave. Also, tell your rental agency if you plan to cross borders (it costs extra) and be aware of **0.00% blood alcohol limits** in Hungary & Czech Republic. Do not drink and drive at all.</p>
+                
+                <h4 class="font-semibold text-lg mt-4 mb-2 text-gray-800">From Budapest: Szentendre</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Why Go:</strong> A charming, colorful artists' town on the Danube. Easy 45-min drive. Park in the main lot and walk.</li>
+                    <li><strong>Est. Rental Cost:</strong> $50 - $70 USD for the day + gas.</li>
+                </ul>
+
+                <h4 class="font-semibold text-lg mt-4 mb-2 text-gray-800">From Vienna: Wachau Valley</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Why Go:</strong> A stunning UNESCO-listed wine valley on the Danube. Drive 1h to Melk (see the Abbey), then follow the river to the beautiful village of Dürnstein. This is a perfect trip for a car.</li>
+                    <li><strong>Est. Rental Cost:</strong> $60 - $90 USD for the day + gas.</li>
+                </ul>
+
+                <h4 class="font-semibold text-lg mt-4 mb-2 text-gray-800">From Prague: Kutná Hora</h4>
+                <ul class="list-disc list-inside space-y-2">
+                    <li><strong>Why Go:</strong> To see the famous "Bone Church" (Sedlec Ossuary) and the massive St. Barbara's Cathedral. A car makes it easy to get between the two main sites.</li>
+                    <li><strong>Est. Rental Cost:</strong> $50 - $80 USD for the day + gas.</li>
+                </ul>
+            `
+        },
         { title: 'Currency & General Tips', content: `
             <ul class="list-disc list-inside space-y-2">
                 <li><strong>Hungary:</strong> Hungarian Forint (HUF). 1 USD ≈ 350 HUF</li>
@@ -345,20 +707,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 <li>Get a travel card like Revolut/Wise. Inform your bank of your travel.</li>
                 <li>You'll need a Type F (standard European) power adapter.</li>
                 <li>Pack layers, a waterproof jacket, and comfortable shoes for November (40-55°F).</li>
+                <li><strong>For Baths:</strong> Bring your own slippers and towel to save on rental fees.</li>
             </ul>`
         },
         { title: 'Transportation Within Cities', content: `
             <ul class="list-disc list-inside space-y-2">
-                <li><strong>Budapest:</strong> Use the BudapestGO app. A 24-hour pass is ~$7.50. Validate tickets!</li>
+                <li><strong>Budapest:</strong> Use the **BudapestGO app** - it's great for routes and finding public water fountains. A 24-hour pass is ~$7.50. Validate tickets!</li>
                 <li><strong>Vienna:</strong> Efficient U-Bahn, trams, buses. A 24-hour pass is ~$8.70. Validate tickets!</li>
-                <li><strong>Prague:</strong> Use the PID Lítačka app. A 24-hour pass is ~$5. Validate tickets to avoid heavy fines!</li>
+                <li><strong>Prague:</strong> Use the PID Lítačka app. A 24-hour pass is ~$5. Validate tickets to avoid heavy fines! (Or use Bolt/Uber, which are very cheap here).</li>
             </ul>`
         },
-        { title: 'Safety, Culture & Money-Saving', content: `
+        { title: 'Safety, Culture & Tipping', content: `
             <ul class="list-disc list-inside space-y-2">
                 <li><strong>Safety:</strong> The region is very safe. Watch for pickpockets in crowded areas. The EU emergency number is 112.</li>
-                <li><strong>Culture:</strong> Dress a bit more formally than typical US casual. Learn basic greetings. Tip 10% in restaurants.</li>
-                <li><strong>Hacks:</strong> Use public transport day passes. Eat lunch specials for main meals. Visit attractions early for fewer crowds/discounts.</li>
+                <li><strong>Tipping:</strong> 5-10% is polite in restaurants (check if a "service fee" is already included). Tell the server your total (e.g., "make it 50") when paying.</li>
+                <li><strong>At Bars:</strong> Be aware that card machines will often prompt you to add a tip; check the % before confirming.</li>
             </ul>`
         },
         { title: 'Emergency Information', content: `
@@ -378,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     const itineraryContent = document.getElementById('itinerary-content');
-    const cityTabs = document.querySelectorAll('.city-tab');
+    const cityTabs = document.querySelectorAll('#city-tabs .city-tab');
 
     function renderItinerary(city) {
         itineraryContent.innerHTML = '';
@@ -431,7 +794,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     renderItinerary('budapest');
-    document.querySelector('.city-tab[data-city="budapest"]').classList.add('active');
+    document.querySelector('#city-tabs .city-tab[data-city="budapest"]').classList.add('active');
     
     const bookingsGrid = document.getElementById('bookings-grid');
     bookingsData.forEach(booking => {
@@ -561,6 +924,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Logic for the new Local Guides section
+    const guideTabs = document.querySelectorAll('#local-guides-content .city-tab');
+    const guideSections = document.querySelectorAll('#local-guides-content .itinerary-section');
+    guideTabs.forEach(tab => {
+      tab.addEventListener('click', function() {
+        guideTabs.forEach(t => t.classList.remove('active'));
+        guideSections.forEach(sec => sec.classList.remove('active'));
+        this.classList.add('active');
+        const city = this.dataset.city;
+        document.querySelector(`#local-guides-content #${city}`).classList.add('active');
+      });
+    });
+
     // PWA Service Worker Registration
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
@@ -578,4 +954,3 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 </body>
 </html>
-
